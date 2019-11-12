@@ -4,6 +4,7 @@
 #include<iomanip>
 #include<fstream>
 #include<string>
+
 static int last_position = 0;//记录当前已经处理掉的文件位置
 void linePrint(string line)
 {
@@ -20,11 +21,12 @@ void find_last_line(ifstream &infile)
 		string line;
 		getline(infile, line);
 		linePrint(line);//输出最新行的内容
-
-
+		
+		
 		if (infile.tellg() > 0)//这里必须加入这个判断，因为在频繁更新目标文件时，会导致该函数返回-1
 		{
-			n = last_position = infile.tellg();
+			last_position= infile.tellg();
+			n = last_position ;
 		}
 	}
 }

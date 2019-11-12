@@ -90,7 +90,8 @@ inline Snake::Snake(int length, CubeKit & cubekit,bool * clockBlink,char * userI
 inline void Snake::PrintApple()
 {
 	_cubekit.AddPre(_apple.x, _apple.y, _apple.z);
-	cout << "apple :(" << _apple.x << "," << _apple.y << "," << _apple.z << ")" << setw(8) << endl;
+	if(!debugMode)
+		cout << "apple :(" << _apple.x << "," << _apple.y << "," << _apple.z << ")" << setw(8) << endl;
 }
 
 inline void Snake::CreateApple()
@@ -166,7 +167,8 @@ inline void Snake::PrintSnake()
 	for (int i = 0; i < _length; i++)
 	{
 		_cubekit.AddPre(now->x, now->y, now->z);
-		cout << "(" << now->x << "," << now->y << "," << now->z << ")" << setw(2);
+		if(!debugMode)
+			cout << "(" << now->x << "," << now->y << "," << now->z << ")" << setw(2);
 		now = now->next;
 	};
 }

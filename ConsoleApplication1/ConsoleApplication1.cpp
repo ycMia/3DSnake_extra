@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include"pch.h"
+bool debugMode = true;
 
 #include"COM.h"
 #include"Snake.h"
@@ -61,13 +62,23 @@ void snakeWork()//---------------蛇的工作----------------
 
 void fileRead()//---------------文件读取----------------
 {
-	cout << "文件已定位为shuchu.txt" << endl;
+	/*cout << "文件已定位为shuchu.txt" << endl;
 
 	int position = 0;
 	ifstream infile("shuchu.txt");
 	
 	while (true)
 	{
+		find_last_line(infile);
+	}*/
+	
+	cout << "文件已定位为shuchu.txt" << endl;
+	
+	int position = 0;
+	ifstream infile;
+	while (true)
+	{//C:\users\dell\source\repos\ConsoleApplication1\Debug
+		ifstream infile("C:\\Users\\DELL\\source\\repos\\ConsoleApplication1\\Debug\\shuchu.txt");
 		find_last_line(infile);
 	}
 }
@@ -84,7 +95,7 @@ void mClock()//---------------时间----------------
 		if (duration >= 1)
 		{
 			*pclockBlink = true;
-			cout << *pclockBlink << endl;
+			//cout << *pclockBlink << endl;
 			//发送响应,在Move执行后关闭该响应
 			start = clock();
 		}
