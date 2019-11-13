@@ -16,6 +16,7 @@ string m_z1("Z1");
 string m_z0("Z0");
 string m_y1("Y1");
 string m_y0("Y0");
+string m_end("**********");
 //
 void linePrint(string line)
 {
@@ -36,6 +37,7 @@ enum Gesture gesture;
 
 void analyzeLine(string line)
 {
+	//bool completeFlag = false;
 	if (line[0] <= '9' && line[0] >= '0')//Êý×Ö
 	{
 		int count = 0;
@@ -80,6 +82,23 @@ void analyzeLine(string line)
 		else if (line[0] == m_y0[0] && line[1] == m_y0[1])
 		{
 			nowCur = 4;
+		}
+		else if (line[0] == m_y0[0] && line[1] == m_y0[1])
+		{
+			nowCur = 4;
+		}
+		else if (line[0] == m_end[0] && line[1] == m_end[1])
+		{
+			int max = 0;
+			for (int i = 0; i < 6; i++)
+			{
+				max = (percentage[max] > percentage[i]) ? max : i;
+			}
+			*puserInput = max;
+			for (int i = 0; i < 6; i++)
+			{
+				percentage[i] = 0;
+			}
 		}
 		else
 		{

@@ -2,6 +2,11 @@
 
 #include"pch.h"
 bool debugMode = false;
+bool clockBlink = false;
+bool * pclockBlink = &clockBlink;
+
+char userInput = '0';
+char * puserInput = &userInput;
 
 #include"COM.h"
 #include"Snake.h"
@@ -17,11 +22,6 @@ bool debugMode = false;
 
 using namespace std;
 
-bool clockBlink = false;
-bool * pclockBlink = &clockBlink;
-
-char userInput = '0';
-char * puserInput  = &userInput;
 
 //void askUser()
 //{
@@ -33,7 +33,7 @@ char * puserInput  = &userInput;
 //		}
 //	}
 //}
-//已经被替代为FileReading.h
+//替代为使用FileReading.h输入数据
 
 void snakeWork()//---------------蛇的工作----------------
 {
@@ -41,7 +41,7 @@ void snakeWork()//---------------蛇的工作----------------
 	Snake snake(4, ck , pclockBlink,puserInput);
 
 	ck.Check();
-	cout << "begin" << endl;
+	//cout << "begin" << endl;
 	int count = 0;
 	while (true)
 	{
@@ -63,16 +63,6 @@ void snakeWork()//---------------蛇的工作----------------
 
 void fileRead()//---------------文件读取----------------
 {
-	/*cout << "文件已定位为shuchu.txt" << endl;
-
-	int position = 0;
-	ifstream infile("shuchu.txt");
-	
-	while (true)
-	{
-		find_last_line(infile);
-	}*/
-	
 	cout << "文件已定位为shuchu.txt" << endl;
 	
 	int position = 0;
