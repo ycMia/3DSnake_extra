@@ -89,7 +89,7 @@ private:
 		int y;//¸ß
 		int z;
 	};
-	Vector3 pre_position[512];
+	//Vector3 pre_position[512];
 	unsigned const char yDefine[8] = {
 		0x01,
 		0x02,

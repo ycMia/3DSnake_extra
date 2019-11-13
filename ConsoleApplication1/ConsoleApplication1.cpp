@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include"pch.h"
-bool debugMode = true;
+bool debugMode = false;
 
 #include"COM.h"
 #include"Snake.h"
@@ -23,16 +23,17 @@ bool * pclockBlink = &clockBlink;
 char userInput = '0';
 char * puserInput  = &userInput;
 
-void askUser()
-{
-	while (true)
-	{
-		if (_kbhit())
-		{
-			*puserInput = _getch();
-		}
-	}
-}
+//void askUser()
+//{
+//	while (true)
+//	{
+//		if (_kbhit())
+//		{
+//			*puserInput = _getch();
+//		}
+//	}
+//}
+//已经被替代为FileReading.h
 
 void snakeWork()//---------------蛇的工作----------------
 {
@@ -107,7 +108,7 @@ int main()
 	thread ts(snakeWork);
 	thread tfr(fileRead);
 	thread tc    (mClock);
-	thread taskUser(askUser);
+	//thread tAskUser(askUser);
 	
 	//ts.hardware_concurrency();
 	while (true);
