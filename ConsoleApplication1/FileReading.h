@@ -10,12 +10,12 @@ static int last_position = 0;//记录当前已经处理掉的文件位置
 int percentage[6] = { 0,0,0,0,0,0 };
 int nowCur = 0;
 //
-string m_x1("X1");
-string m_x0("X0");
-string m_z1("Z1");
-string m_z0("Z0");
-string m_y1("Y1");
-string m_y0("Y0");
+string m_x1("RIGHT");
+string m_x0("LEFT");
+string m_z1("FORWARD");
+string m_z0("BACK");
+string m_y1("UP");
+string m_y0("DOWN");
 string m_end("**********");
 //
 void linePrint(string line)
@@ -40,21 +40,28 @@ void analyzeLine(string line)
 	//bool completeFlag = false;
 	if (line[0] <= '9' && line[0] >= '0')//数字
 	{
-		int count = 0;
-		while(count<3)
+		if (percentage[nowCur] == 0)
 		{
-			if (line[++count] == '.')
+			int count = 0;
+			while (count < 3)
 			{
+				if (line[++count] == '.')
+				{
+					count--;
+					break;
+				}
+			}
+			int i = 0;
+			while (count >= 0)
+			{
+				percentage[nowCur] += (int)pow(10, i)*((int)line[count] - '0');
 				count--;
-				break;
+				i++;
 			}
 		}
-		int i = 0;
-		while (count >= 0)
+		else
 		{
-			percentage[nowCur] += (int)pow(10, i)*((int)line[count]-'0');
-			count--;
-			i++;
+
 		}
 	}
 	else
@@ -117,7 +124,6 @@ void find_last_line(ifstream &infile)
 		infile.seekg(last_position, ios::beg);
 		string line;
 		getline(infile, line);
-		//linePrint(line);//输出最新行的内容
 		analyzeLine(line);
 		
 		if (infile.tellg() > 0)//这里必须加入这个判断，因为在频繁更新目标文件时，会导致该函数返回-1

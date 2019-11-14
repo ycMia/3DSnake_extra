@@ -1,12 +1,14 @@
 ﻿#pragma once
 
 #include"pch.h"
-bool debugMode = false;
+//std::locale loc = std::locale::global(std::locale(""));
+bool debugMode = false;//为true时不会进行蛇/苹果的坐标刷新
 bool clockBlink = false;
 bool * pclockBlink = &clockBlink;
 
 char userInput = '0';
 char * puserInput = &userInput;
+
 
 #include"COM.h"
 #include"Snake.h"
@@ -19,6 +21,9 @@ char * puserInput = &userInput;
 #include<string>
 #include<thread>//c++ 11 标准多线程
 #include<time.h>
+#include<direct.h>
+
+char nowPath[MAX_PATH];//将会在FileReading运行时赋值
 
 using namespace std;
 
@@ -63,13 +68,21 @@ void snakeWork()//---------------蛇的工作----------------
 
 void fileRead()//---------------文件读取----------------
 {
+
 	cout << "文件已定位为shuchu.txt" << endl;
 	
 	int position = 0;
 	ifstream infile;
+	_getcwd(nowPath, MAX_PATH);
+	strcat_s(nowPath, "\\shuchu.txt");
+	cout <<endl<< nowPath << endl;
 	while (true)
-	{//C:\users\dell\source\repos\ConsoleApplication1\Debug
-		ifstream infile("C:\\Users\\DELL\\source\\repos\\ConsoleApplication1\\Debug\\shuchu.txt");
+	{
+		ifstream infile;
+
+		infile.open(nowPath, ios::in);
+		if (!infile)
+			cout << "nai" << endl;
 		find_last_line(infile);
 	}
 }
