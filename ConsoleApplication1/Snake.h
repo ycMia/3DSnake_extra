@@ -26,9 +26,13 @@ public:
 	void Init(Node * first, Node * last, int length);
 	Snake(int length, CubeKit & cubekit,bool * clockBlink,char * puserInput);
 
+	void PrintApple();
 	bool IsEatingApple();
-	bool IsEatingSelf();
+	void CreateApple();
+
 	void PrintSnake();
+	bool IsEatingSelf();
+
 	Node * GetForwardNode();
 	void Move();
 	void MoveAndRend();
@@ -36,8 +40,6 @@ public:
 	int  AskIfEx();
 	void Refresh();
 
-	void PrintApple();
-	void CreateApple();
 
 private:
 	char * _userInput;
@@ -46,7 +48,7 @@ private:
 	int _length;
 	Node * _tail = new Node;
 	Node * _head = new Node;
-	Apple _apple;
+	Apple _apple = {7,4,4};
 	int _destnation = 0;//相对世界的上下左右前后,即接入的数据
 };
 
@@ -77,11 +79,11 @@ inline void Snake::Init(Node * first, Node * last, int length)
 
 inline Snake::Snake(int length, CubeKit & cubekit,bool * clockBlink,char * userInput)
 	:_cubekit(cubekit),_clockBlink(clockBlink),_userInput(userInput)
-{
+{/*
 	_apple.x = 7;
 	_apple.y = 4;
 	_apple.z = 4;
-
+*/
 	_length = length;
 	_head->x = 4; _head->y = 4; _head->z = 4;
 	Init(_head, _tail, _length - 2);//递归
@@ -99,7 +101,7 @@ inline void Snake::CreateApple()
 	time_t *ttime = new time_t;
 	srand((int)time(ttime));
 
-	//find position which snake's body not exist
+	//防止苹果生成在蛇的位置
 	Node *finder = _head;
 	bool crash = false;
 	while (true)
@@ -122,6 +124,7 @@ inline void Snake::CreateApple()
 		if (!crash)
 			break;
 	}
+	delete ttime;
 }
 
 inline bool Snake::IsEatingApple()
@@ -173,7 +176,7 @@ inline void Snake::PrintSnake()
 	};
 }
 
-inline Node * Snake::GetForwardNode()//xyz 的方向为左手坐标系(拇指x正,食指y正,中指z正)
+inline Node * Snake::GetForwardNode()//不关坐标系的事
 {
 	Node * pnode = new Node;
 

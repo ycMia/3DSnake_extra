@@ -17,23 +17,11 @@ string m_z0("BACK");
 string m_y1("UP");
 string m_y0("DOWN");
 string m_end("**********");
-//
-void linePrint(string line)
-{
-	std::cout << "**** " << line << " ****" << std::endl;
-}
 
-//enum Gesture
+//void linePrint(string line)
 //{
-//	X1=0,
-//	X0,
-//	Z1,
-//	Z0,
-//	Y1,
-//	Y0
-//};
-
-enum Gesture gesture;
+//	std::cout << "**** " << line << " ****" << std::endl;
+//}
 
 void analyzeLine(string line)
 {
