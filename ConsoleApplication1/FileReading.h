@@ -25,6 +25,7 @@ string m_end("**********");
 
 void analyzeLine(string line)
 {
+	//cout << line << endl;
 	//bool completeFlag = false;
 	if (line[0] <= '9' && line[0] >= '0')//Êý×Ö
 	{
@@ -90,6 +91,7 @@ void analyzeLine(string line)
 				max = (percentage[max] > percentage[i]) ? max : i;
 			}
 			*puserInput = max;
+			cout << "    "<<(int)*puserInput << endl;
 			for (int i = 0; i < 6; i++)
 			{
 				percentage[i] = 0;
@@ -97,8 +99,8 @@ void analyzeLine(string line)
 		}
 		else
 		{
-			cout << "********************Error in Input********************" << endl;
-			system("pause");
+			cout << "********************Error Input********************" << endl;
+			//system("pause");
 		}
 	}
 }

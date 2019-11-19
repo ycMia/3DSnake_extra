@@ -257,7 +257,9 @@ inline int Snake::AskIfEx()//用户输入
 {
 	//打这段代码的时候遇到了学校里一只猫
 	//第一次知道什么叫"键盘被猫踩了"的感觉
-	switch (*_userInput)
+
+	//已弃用键盘类型
+	/*switch (*_userInput)
 	{
 	case 'd':
 		return 0;
@@ -274,8 +276,10 @@ inline int Snake::AskIfEx()//用户输入
 	default:
 		return _destnation;
 		break;
-	}
-	
+	}*/
+
+	return *puserInput;
+
 	//else
 	//{
 	//	if (*_clockBlink)

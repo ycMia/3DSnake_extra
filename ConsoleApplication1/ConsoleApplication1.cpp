@@ -1,9 +1,13 @@
 ﻿#pragma once
 
 #include"pch.h"
-bool debugMode = false;//==false时会进行蛇/苹果的坐标显示在console上
+bool debugMode = true;//==false时会进行蛇/苹果的坐标显示在console上
+
 bool clockBlink = false;
 bool * pclockBlink = &clockBlink;
+
+bool clockBlink2 = false;
+bool * pclockBlink2 = &clockBlink2;
 
 char userInput = '0';
 char * puserInput = &userInput;
@@ -66,24 +70,28 @@ void snakeWork()//---------------蛇的工作----------------
 
 void fileRead()//---------------文件读取----------------
 {
-	char nowPath[MAX_PATH];//将会在FileReading运行时赋值
-	_getcwd(nowPath, MAX_PATH);
-	strcat_s(nowPath, "\\shuchu.txt");
-	cout << endl << nowPath << endl;
+		char nowPath[MAX_PATH];//将会在FileRead()运行时赋值
+		_getcwd(nowPath, MAX_PATH);
+		strcat_s(nowPath, "\\shuchu.txt");
+		cout << endl << nowPath << endl;
 
-	cout << "文件已定位为shuchu.txt" << endl;
-	
-	ifstream infile;
+		cout << "文件已定位为shuchu.txt" << endl;
 
-	while (true)
-	{
-		infile.open(nowPath, ios::in);
-		/*
-		if (!infile)
-			cout << "nai" << endl;
-		*/
-		find_last_line(infile);
-	}
+		ifstream infile;
+
+		while (true)
+		{
+			if (*pclockBlink2)
+			{
+				infile.open(nowPath, ios::in);
+				/*
+				if (!infile)
+					cout << "nai" << endl;
+				*/
+				find_last_line(infile);
+			}
+			*pclockBlink2 = false;
+		}
 }
 
 void mClock()//---------------时间----------------
@@ -105,14 +113,33 @@ void mClock()//---------------时间----------------
 	}
 }
 
+void mClock2()//---------------时间2----------------
+{
+	clock_t start, finish;
+	double duration;
+	start = clock();
+	while (true)
+	{
+		finish = clock();
+		duration = (int)((finish - start) / CLOCKS_PER_SEC);
+		if (duration >= 0.2)
+		{
+			*pclockBlink2 = true;
+			start = clock();
+		}
+	}
+}
+
 int main()
 {
 	thread ts(snakeWork);
 	ts.detach();
 	thread tfr(fileRead);
 	tfr.detach();
-	thread tc    (mClock);
+	thread tc(mClock);
 	tc.detach();
+	thread tc2(mClock2);
+	tc2.detach();
 
 	while (true);
 	return 0;
