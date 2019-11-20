@@ -5,21 +5,22 @@
 bool debugMode = false;//==false时会进行蛇/苹果的坐标显示在console上
 
 bool clockBlink = false;
-bool * pclockBlink = &clockBlink;
+bool *pclockBlink = &clockBlink;
 
 //bool clockBlink2 = false;
 //bool * pclockBlink2 = &clockBlink2;
 
 char userInput = 0;
 char * puserInput = &userInput;
+//已弃用键盘输入
 
-int fileInput = 0;
-int *pfileInput = &fileInput;
+//int fileInput = 0;
+//int *pfileInput = &fileInput;
 
 
 #include"COM.h"
-#include"FileReading.h"
 #include"Snake.h"
+#include"FileReading.h"
 
 #include<conio.h>
 #include<time.h>
@@ -49,11 +50,19 @@ void askUser()
 void snakeWork()//---------------蛇的工作----------------
 {
 	CubeKit ck;
-	Snake snake(4, ck , pclockBlink,puserInput);
+	Snake snake(4, ck , pclockBlink);
 
 	ck.Check();
 	//cout << "begin" << endl;
 	int count = 0;
+
+	char nowPath[MAX_PATH];
+	ifstream infile;
+	_getcwd(nowPath, MAX_PATH);
+	strcat_s(nowPath, "\\shuchu.txt");
+	cout << endl << nowPath << endl;
+	cout << "文件已定位为shuchu.txt" << endl;
+
 	while (true)
 	{
 		if (snake.IsEatingSelf())
@@ -63,8 +72,13 @@ void snakeWork()//---------------蛇的工作----------------
 			cout << "******************************************" << endl;
 		}
 
+		//snake.ExDestnation(snake.AskIfEx());
+		//键盘输入,弃用
+		
+		snake.fileRead(infile,nowPath);
 		snake.ExDestnation(snake.AskIfEx());
-		if (*pclockBlink)
+
+		if (clockBlink)
 		{
 			snake.MoveAndRend();
 		}
@@ -82,7 +96,7 @@ void mClock()//---------------时间----------------
 	{
 		finish = clock();
 		duration = (finish - start);
-		if (duration >= 2000)
+		if (duration >= 2*CLOCKS_PER_SEC)
 		{
 			*pclockBlink = true;
 			//cout << *pclockBlink << endl;
