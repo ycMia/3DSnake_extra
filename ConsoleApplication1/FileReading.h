@@ -5,8 +5,7 @@
 #include<fstream>
 #include<string>
 
-static int last_position = 0;//记录当前已经处理掉的文件位置
-
+//static int last_position = 0;
 int percentage[6] = { 0,0,0,0,0,0 };
 int nowCur = 0;
 //
@@ -17,13 +16,13 @@ string m_z0("BACK");
 string m_y1("UP");
 string m_y0("DOWN");
 string m_end("**********");
-
+//
 //void linePrint(string line)
 //{
 //	std::cout << "**** " << line << " ****" << std::endl;
 //}
 
-void analyzeLine(string line)
+bool analyzeLine(string line)
 {
 	//cout << line << endl;
 	//bool completeFlag = false;
@@ -90,12 +89,13 @@ void analyzeLine(string line)
 			{
 				max = (percentage[max] > percentage[i]) ? max : i;
 			}
-			*puserInput = max;
-			cout << "    "<<(int)*puserInput << endl;
+			*pfileInput = max;
+			cout << "    "<< *pfileInput << endl;
 			for (int i = 0; i < 6; i++)
 			{
 				percentage[i] = 0;
 			}
+			return true;
 		}
 		else
 		{
@@ -103,23 +103,24 @@ void analyzeLine(string line)
 			//system("pause");
 		}
 	}
+	return false;
 }
 
 void find_last_line(ifstream &infile)
 {
 	infile.seekg(0, ios::end);
 	int filesize = infile.tellg();
-	for (int n = last_position; n < filesize; n++)
+
+	for(int n=0;n<filesize;)
 	{
-		infile.seekg(last_position, ios::beg);
+		infile.seekg(n, ios::beg);//移位至待读取内容处
 		string line;
 		getline(infile, line);
-		analyzeLine(line);
-		
-		if (infile.tellg() > 0)//这里必须加入这个判断，因为在频繁更新目标文件时，会导致该函数返回-1
+		if (analyzeLine(line))
 		{
-			last_position= infile.tellg();
-			n = last_position ;
+			break;
 		}
+		n = infile.tellg();
 	}
 }
+

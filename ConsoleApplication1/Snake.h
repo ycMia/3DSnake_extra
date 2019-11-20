@@ -4,6 +4,9 @@
 #include<iomanip>
 #include<fstream>
 #include<string>
+#include<direct.h>
+#include<cstdio>
+
 struct Node
 {
 	int x;
@@ -40,8 +43,26 @@ public:
 	int  AskIfEx();
 	void Refresh();
 
+	void fileRead()//---------------文件读取----------------
+	{
+		_infile.open(nowPath, ios::in);
+		
+		find_last_line(_infile);
+		_infile.close();
+		if (remove(nowPath) == 0)
+		{
+			cout << "删除成功" << endl;
+		}
+		else
+		{
+			cout << "删除失败" << endl;
+		}
+	}
 
 private:
+	char nowPath[MAX_PATH];
+	ifstream _infile;
+
 	char * _userInput;
 	bool * _clockBlink;
 	CubeKit & _cubekit;
@@ -79,7 +100,16 @@ inline void Snake::Init(Node * first, Node * last, int length)
 
 inline Snake::Snake(int length, CubeKit & cubekit,bool * clockBlink,char * userInput)
 	:_cubekit(cubekit),_clockBlink(clockBlink),_userInput(userInput)
-{/*
+{
+	_getcwd(nowPath, MAX_PATH);
+	strcat_s(nowPath, "\\shuchu.txt");
+	cout << endl << nowPath << endl;
+
+	cout << "文件已定位为shuchu.txt" << endl;
+
+	ifstream infile;
+
+	/*
 	_apple.x = 7;
 	_apple.y = 4;
 	_apple.z = 4;
@@ -87,6 +117,9 @@ inline Snake::Snake(int length, CubeKit & cubekit,bool * clockBlink,char * userI
 	_length = length;
 	_head->x = 4; _head->y = 4; _head->z = 4;
 	Init(_head, _tail, _length - 2);//递归
+
+
+	
 }
 
 inline void Snake::PrintApple()
@@ -180,7 +213,7 @@ inline Node * Snake::GetForwardNode()//不关坐标系的事
 {
 	Node * pnode = new Node;
 
-	switch (_destnation)
+	switch (*pfileInput)
 	{
 	case 0:
 		pnode->x = _head->x + 1;
@@ -238,6 +271,7 @@ inline void Snake::Move()
 
 inline void Snake::MoveAndRend()
 {
+	fileRead();
 	Move();
 	Refresh();
 	_cubekit.ClearPre();
@@ -255,10 +289,8 @@ inline void Snake::ExDestnation(int d)
 
 inline int Snake::AskIfEx()//用户输入
 {
-	//打这段代码的时候遇到了学校里一只猫
-	//第一次知道什么叫"键盘被猫踩了"的感觉
-
-	//已弃用键盘类型
+	return *pfileInput;
+	//已弃用键盘输入
 	/*switch (*_userInput)
 	{
 	case 'd':
@@ -277,19 +309,9 @@ inline int Snake::AskIfEx()//用户输入
 		return _destnation;
 		break;
 	}*/
-
-	return *puserInput;
-
-	//else
-	//{
-	//	if (*_clockBlink)
-	//	{
-	//		return _destnation;
-	//		//刷新为缺省方向
-	//	}
-	//	
-	//}
+	
 }
+
 
 inline void Snake::Refresh()//防止超过立方
 {

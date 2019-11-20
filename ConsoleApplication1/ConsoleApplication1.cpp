@@ -1,25 +1,28 @@
 ﻿#pragma once
 
 #include"pch.h"
-bool debugMode = true;//==false时会进行蛇/苹果的坐标显示在console上
+
+bool debugMode = false;//==false时会进行蛇/苹果的坐标显示在console上
 
 bool clockBlink = false;
 bool * pclockBlink = &clockBlink;
 
-bool clockBlink2 = false;
-bool * pclockBlink2 = &clockBlink2;
+//bool clockBlink2 = false;
+//bool * pclockBlink2 = &clockBlink2;
 
-char userInput = '0';
+char userInput = 0;
 char * puserInput = &userInput;
+
+int fileInput = 0;
+int *pfileInput = &fileInput;
 
 
 #include"COM.h"
-#include"Snake.h"
 #include"FileReading.h"
+#include"Snake.h"
 
 #include<conio.h>
 #include<time.h>
-#include<direct.h>
 
 #include<iostream>
 #include<iomanip>
@@ -29,17 +32,18 @@ char * puserInput = &userInput;
 
 using namespace std;
 
-
-//void askUser()
-//{
-//	while (true)
-//	{
-//		if (_kbhit())
-//		{
-//			*puserInput = _getch();
-//		}
-//	}
-//}
+/*
+void askUser()
+{
+	while (true)
+	{
+		if (_kbhit())
+		{
+			*puserInput = _getch();
+		}
+	}
+}
+*/
 //替代为使用FileReading.h输入数据
 
 void snakeWork()//---------------蛇的工作----------------
@@ -65,34 +69,9 @@ void snakeWork()//---------------蛇的工作----------------
 			snake.MoveAndRend();
 		}
 	}
-
 }
 
-void fileRead()//---------------文件读取----------------
-{
-		char nowPath[MAX_PATH];//将会在FileRead()运行时赋值
-		_getcwd(nowPath, MAX_PATH);
-		strcat_s(nowPath, "\\shuchu.txt");
-		cout << endl << nowPath << endl;
 
-		cout << "文件已定位为shuchu.txt" << endl;
-
-		ifstream infile;
-
-		while (true)
-		{
-			if (*pclockBlink2)
-			{
-				infile.open(nowPath, ios::in);
-				/*
-				if (!infile)
-					cout << "nai" << endl;
-				*/
-				find_last_line(infile);
-			}
-			*pclockBlink2 = false;
-		}
-}
 
 void mClock()//---------------时间----------------
 {
@@ -102,8 +81,8 @@ void mClock()//---------------时间----------------
 	while (true)
 	{
 		finish = clock();
-		duration = (int)((finish - start) / CLOCKS_PER_SEC);
-		if (duration >= 1)
+		duration = (finish - start);
+		if (duration >= 2000)
 		{
 			*pclockBlink = true;
 			//cout << *pclockBlink << endl;
@@ -113,6 +92,7 @@ void mClock()//---------------时间----------------
 	}
 }
 
+/*
 void mClock2()//---------------时间2----------------
 {
 	clock_t start, finish;
@@ -121,27 +101,28 @@ void mClock2()//---------------时间2----------------
 	while (true)
 	{
 		finish = clock();
-		duration = (int)((finish - start) / CLOCKS_PER_SEC);
-		if (duration >= 0.2)
+		duration = (finish - start);
+		if (duration >= 200)
 		{
 			*pclockBlink2 = true;
 			start = clock();
 		}
 	}
 }
+*/
 
 int main()
 {
 	thread ts(snakeWork);
 	ts.detach();
-	thread tfr(fileRead);
-	tfr.detach();
 	thread tc(mClock);
 	tc.detach();
+	
+	/*
 	thread tc2(mClock2);
 	tc2.detach();
+	*/
 
 	while (true);
 	return 0;
-
 }
