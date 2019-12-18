@@ -5,7 +5,7 @@
 bool debugMode = false;//==false时会进行蛇/苹果的坐标显示在console上
 
 bool clockBlink = false;
-bool *pclockBlink = &clockBlink;
+//bool *pclockBlink = &clockBlink;
 
 //bool clockBlink2 = false;
 //bool * pclockBlink2 = &clockBlink2;
@@ -50,7 +50,7 @@ void askUser()
 void snakeWork()//---------------蛇的工作----------------
 {
 	CubeKit ck;
-	Snake snake(4, ck , pclockBlink);
+	Snake snake(4, ck);
 
 	ck.Check();
 	//cout << "begin" << endl;
@@ -71,16 +71,15 @@ void snakeWork()//---------------蛇的工作----------------
 			cout << " *           You're eating yourself       *" << endl;
 			cout << "******************************************" << endl;
 		}
-
-		//snake.ExDestnation(snake.AskIfEx());
-		//键盘输入,弃用
+		//检测到死亡,但不会停下
 		
-		snake.fileRead(infile,nowPath);
+		snake.FileReading(infile,nowPath);
 		snake.ExDestnation(snake.AskIfEx());
 
 		if (clockBlink)
 		{
 			snake.MoveAndRend();
+			clockBlink = false;
 		}
 	}
 }
@@ -98,7 +97,7 @@ void mClock()//---------------时间----------------
 		duration = (finish - start);
 		if (duration >= 2*CLOCKS_PER_SEC)
 		{
-			*pclockBlink = true;
+			clockBlink = true;
 			//cout << *pclockBlink << endl;
 			//发送响应,在Move执行后关闭该响应
 			start = clock();

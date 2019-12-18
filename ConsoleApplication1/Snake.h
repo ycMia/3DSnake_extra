@@ -27,7 +27,7 @@ class Snake
 {
 public:
 	void Init(Node * first, Node * last, int length);
-	Snake(int length, CubeKit & cubekit,bool * clockBlink);
+	Snake(int length, CubeKit & cubekit);
 
 	void PrintApple();
 	bool IsEatingApple();
@@ -43,13 +43,13 @@ public:
 	int  AskIfEx();
 	void Refresh();
 
-	void fileRead(ifstream & infile, const char * nowPath);
-	bool analyzeLine(string line);
-	void find_last_line(ifstream & infile);
+	void FileReading(ifstream & infile, const char * nowPath);
+	bool AnalyzeLine(string line);
+	void Find_last_line(ifstream & infile);
 	//void fileRead(ifstream infile, const char * nowPath);
 
 private:
-	bool * _clockBlink;
+	//bool * _clockBlink;
 	CubeKit & _cubekit;
 	int _length;
 	Node * _tail = new Node;
@@ -70,7 +70,6 @@ private:
 	const string _m_y0="DOWN";
 	const string _m_end="**********";
 };
-
 
 inline void Snake::Init(Node * first, Node * last, int length)
 {
@@ -96,8 +95,8 @@ inline void Snake::Init(Node * first, Node * last, int length)
 	}
 }
 
-inline Snake::Snake(int length, CubeKit & cubekit,bool * clockBlink)
-	:_cubekit(cubekit),_clockBlink(clockBlink)
+inline Snake::Snake(int length, CubeKit & cubekit)
+	:_cubekit(cubekit)
 {
 	/*
 	_apple.x = 7;
@@ -305,8 +304,6 @@ inline void Snake::MoveAndRend()
 	PrintSnake();
 	PrintApple();
 	_cubekit.printSnake();
-
-	*_clockBlink = false;
 }
 
 inline void Snake::ExDestnation(int d)
@@ -365,10 +362,10 @@ inline void Snake::Refresh()//防止超过立方
 	}
 }
 
-inline void Snake::fileRead(ifstream & infile, const char * nowPath)
+inline void Snake::FileReading(ifstream & infile, const char * nowPath)
 {
 	infile.open(nowPath, ios::in);
-	find_last_line(infile);
+	Find_last_line(infile);
 	infile.close();
 	if (remove(nowPath) == 0)
 	{
@@ -377,17 +374,11 @@ inline void Snake::fileRead(ifstream & infile, const char * nowPath)
 	else
 	{
 		//cout << "删除失败" << endl;
+		//防止刷新,杠掉x
 	}
 }
 
-//static int last_position = 0;
-
-//void Snkae::linePrint(string line)
-//{
-//	std::cout << "**** " << line << " ****" << std::endl;
-//}
-
-bool Snake::analyzeLine(string line)
+bool Snake::AnalyzeLine(string line)
 {
 	//cout << line << endl;
 	//bool completeFlag = false;
@@ -465,13 +456,14 @@ bool Snake::analyzeLine(string line)
 		else
 		{
 			cout << "********************Error Input********************" << endl;
+			return true;//可能是因为删除速度过快,因此跳过此次循环 Snake.h line:478
 			//system("pause");
 		}
 	}
 	return false;
 }
 
-void Snake::find_last_line(ifstream &infile)
+void Snake::Find_last_line(ifstream &infile)
 {
 	infile.seekg(0, ios::end);
 	int filesize = infile.tellg();
@@ -481,7 +473,7 @@ void Snake::find_last_line(ifstream &infile)
 		infile.seekg(n, ios::beg);//移位至n处
 		string line;
 		getline(infile, line);
-		if (analyzeLine(line))
+		if (AnalyzeLine(line))
 		{
 			break;
 		}
