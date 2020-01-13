@@ -53,6 +53,7 @@ void snakeWork()//---------------蛇的工作----------------
 	Snake snake(4, ck);
 
 	ck.Check();
+	system("pause");
 	//cout << "begin" << endl;
 	int count = 0;
 
